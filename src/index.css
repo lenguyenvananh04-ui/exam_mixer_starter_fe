@@ -1,0 +1,136 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* body + html full chiều cao và nền gradient */
+html, body, #root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #ffd6e7 0%, #f0c8f9 50%, #d6b8ff 100%);
+  display: flex;
+  justify-content: center;   /* căn giữa ngang */
+  align-items: flex-start;   /* căn từ trên xuống, không khóa giữa cứng */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  padding: 40px 0;           /* có khoảng cách trên dưới để card nổi bật */
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.app-card {
+  margin-top: 20px;
+  width: min(500px, 92vw);
+  background: #fff;                /* thẻ trắng nổi trên nền gradient */
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow:
+    0 12px 24px -8px rgba(0,0,0,.25),
+    0 6px 12px -10px rgba(0,0,0,.18);
+}
+
+.app-title {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: clamp(28px, 4vw, 40px);
+}
+.app-sub { 
+  text-align: center; 
+  margin: 0 0 12px; 
+  color: #415168;
+}
+
+/* input & button nhìn gọn */
+.center-form input {
+  width: 260px;
+  padding: 8px 10px;
+  border: 1px solid #d6dbe5;
+  border-radius: 8px;
+  outline: none;
+}
+.center-form input:focus {
+  border-color: #9aa8c0;
+  box-shadow: 0 0 0 3px rgba(100, 116, 139, .15);
+}
+
+.btn {
+  min-width: 140px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #111827;
+  color: #fff;
+  cursor: pointer;
+}
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+  border-radius: 6px;
+}
+
+.app-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* tiêu đề ở giữa */
+}
+
+/* nút đăng xuất ở góc phải phần header của card */
+.app-header .logout {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.btn-outline {
+  background: #fff;
+  color: #111827;
+  border: 1px solid #d6dbe5;
+}
+.btn-outline:hover {
+  background: #f5f7fb;
+}
+
+.card-footer{
+  display:flex;
+  justify-content:center;
+  margin-top:16px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
