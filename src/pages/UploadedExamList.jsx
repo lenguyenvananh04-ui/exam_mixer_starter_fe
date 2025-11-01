@@ -21,7 +21,7 @@ import {
     createUploadedExam,
     updateUploadedExam,
     deleteUploadedExam,
-} from "../api";
+} from "../api.js";
 
 const UploadList = () => {
     const [data, setData] = useState([]);

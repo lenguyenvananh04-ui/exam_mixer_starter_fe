@@ -119,3 +119,54 @@ export async function listResults({ student_code = "", subject = "" } = {}) {
 export async function getResultDetail(session_id) {
   return jsonFetch(`${API}/results/session/${session_id}`, { method: "GET" });
 }
+// ================== UPLOAD LIST CRUD ==================
+
+// Lấy danh sách bài thi đã upload
+export async function listUploadedExams() {
+    return jsonFetch(`${API}/uploads`, { method: "GET" });
+}
+
+// Thêm (tải lên) 1 bài thi mới (file hoặc metadata)
+export async function createUploadedExam(formData) {
+    // formData có thể chứa file hoặc thông tin khác
+    const res = await fetch(`${API}/uploads`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+    });
+    const data = await safeParseJSON(res);
+    if (!res.ok) throw new Error(data?.detail || "Upload lỗi");
+    return data;
+}
+
+// Cập nhật thông tin bài thi (ví dụ tên, mô tả...)
+export async function updateUploadedExam(id, payload) {
+    return jsonFetch(`${API}/uploads/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(payload),
+    });
+}
+
+// Xóa bài thi
+export async function deleteUploadedExam(id) {
+    return jsonFetch(`${API}/uploads/${id}`, { method: "DELETE" });
+}
+
+// ================== LỊCH SỬ TRỘN ĐỀ ==================
+
+export async function listMixedExams(limit = 50) {
+  return jsonFetch(`${API}/exam/mixed-history?limit=${limit}`, {
+    method: "GET",
+  });
+}
+export async function getMixedExamDetail(id) {
+  return jsonFetch(`${API}/exam/mixed-history/${id}`, {
+    method: "GET",
+  });
+}
+
+export async function deleteMixedExam(id) {
+  return jsonFetch(`${API}/exam/mixed-history/${id}`, {
+    method: "DELETE",
+  });
+}
