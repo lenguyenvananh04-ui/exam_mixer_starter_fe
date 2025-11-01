@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Table, Card, Tag, Spin, message, Button, Modal } from "antd";
+import { Table, Card, Tag, Spin, message, Button, Modal, Space } from "antd";
 import dayjs from "dayjs";
 import {
   listMixedExams,
   getMixedExamDetail,
   deleteMixedExam,
-} from "../api"; // ✅ import thêm 2 hàm mới
+} from "../api";
 
 export default function TeacherMixHistory() {
   const [loading, setLoading] = useState(false);
@@ -38,16 +38,23 @@ export default function TeacherMixHistory() {
   };
 
   const handleDelete = async (record) => {
-    if (!window.confirm(`Xóa bộ đề ${record.subject} - Đề ${record.version}?`))
-      return;
-    try {
-      await deleteMixedExam(record.id);
-      message.success("Đã xóa bộ đề");
-      fetchData();
-    } catch (err) {
-      console.error(err);
-      message.error("Không thể xóa bộ đề");
-    }
+    Modal.confirm({
+      title: "Xác nhận xóa",
+      content: `Bạn có chắc muốn xóa bộ đề ${record.subject} - Đề ${record.version}?`,
+      okText: "Xóa",
+      cancelText: "Hủy",
+      okType: "danger",
+      async onOk() {
+        try {
+          await deleteMixedExam(record.id);
+          message.success("Đã xóa bộ đề");
+          fetchData();
+        } catch (err) {
+          console.error(err);
+          message.error("Không thể xóa bộ đề");
+        }
+      },
+    });
   };
 
   useEffect(() => {
@@ -70,6 +77,7 @@ export default function TeacherMixHistory() {
       title: "Số câu",
       dataIndex: "questions_count",
       key: "questions_count",
+      align: "center",
     },
     {
       title: "Thời gian trộn",
@@ -80,19 +88,24 @@ export default function TeacherMixHistory() {
     {
       title: "Thao tác",
       key: "actions",
+      align: "center",
       render: (_, record) => (
-        <>
+        <Space>
           <Button
-            type="link"
+            type="primary"
+            size="small"
             onClick={() => handleView(record)}
-            style={{ marginRight: 8 }}
           >
-            👁 Xem
+            Xem
           </Button>
-          <Button danger type="link" onClick={() => handleDelete(record)}>
-            🗑 Xóa
+          <Button
+            danger
+            size="small"
+            onClick={() => handleDelete(record)}
+          >
+            Xóa
           </Button>
-        </>
+        </Space>
       ),
     },
   ];
@@ -108,7 +121,7 @@ export default function TeacherMixHistory() {
           rowKey="id"
           columns={columns}
           dataSource={data}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 8 }}
         />
       )}
 
@@ -118,14 +131,62 @@ export default function TeacherMixHistory() {
         onCancel={() => setDetailOpen(false)}
         title={`Chi tiết đề ${detail?.subject || ""} - Đề ${detail?.version || ""}`}
         footer={null}
-        width={800}
+        width={900}
       >
-        {detail ? (
-          <pre style={{ background: "#f7f7f7", padding: 12, borderRadius: 6 }}>
-            {JSON.stringify(detail.questions, null, 2)}
-          </pre>
+        {detail && detail.questions?.length > 0 ? (
+          <div
+            style={{
+              maxHeight: "70vh",
+              overflowY: "auto",
+              paddingRight: 10,
+            }}
+          >
+            {detail.questions.map((q, index) => (
+              <div
+                key={q.id || index}
+                style={{
+                  marginBottom: 16,
+                  padding: "12px 16px",
+                  borderBottom: "1px solid #eee",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 600,
+                    marginBottom: 6,
+                    fontSize: 15,
+                  }}
+                >
+                  {index + 1}. {q.text}
+                </div>
+
+                <ul style={{ marginTop: 4, marginBottom: 8 }}>
+                  {q.options.map((opt, idx) => (
+                    <li key={idx} style={{ listStyleType: "none", marginLeft: 8 }}>
+                      {String.fromCharCode(65 + idx)}. {opt}
+                    </li>
+                  ))}
+                </ul>
+
+                <div style={{ fontSize: 13, color: "#666" }}>
+                  <span style={{ marginRight: 12 }}>
+                    <strong>Chủ đề:</strong> {q.topic || "Không rõ"}
+                  </span>
+                  <span style={{ marginRight: 12 }}>
+                    <strong>Điểm:</strong> {q.points}
+                  </span>
+                  <span>
+                    <strong>Độ khó:</strong>{" "}
+                    <Tag color="geekblue" style={{ marginLeft: 4 }}>
+                      {q.difficulty}
+                    </Tag>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
-          <p>Không có dữ liệu.</p>
+          <p>Không có dữ liệu câu hỏi.</p>
         )}
       </Modal>
     </Card>
