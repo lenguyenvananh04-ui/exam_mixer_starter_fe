@@ -4,6 +4,7 @@ import Login from "./pages/Login.jsx";
 import TeacherUpload from "./pages/TeacherUpload.jsx";
 import UploadList from "./pages/UploadedExamList.jsx"
 import TeacherMixHistory from "./pages/TeacherMixHistory.jsx"
+import AdminUserManager from "./pages/AdminUserManager.jsx"
 import Results from "./pages/Results.jsx";
 import {startExam, submitExam} from "./api.js";
 import Header from "./compoment/Header.jsx";
@@ -44,6 +45,9 @@ export default function App() {
         return <StudentExam user={user} onLogout={() => setUser(null)}/>;
     }
 
+    if (user?.role === "admin") {
+        return <AdminShell user={user} onLogout={() => setUser(null)} />;
+    }
     // Fallback
     return (
         <div style={{padding: 16}}>
@@ -54,6 +58,33 @@ export default function App() {
             <button onClick={() => setUser(null)}>Đăng xuất</button>
         </div>
     );
+}
+function AdminShell({ user, onLogout }) {
+  const [tab, setTab] = useState("users");
+
+  const items = [
+    {
+      key: "users",
+      label: "👤 Quản lý tài khoản",
+      children: <AdminUserManager />,
+    },
+  ];
+
+  return (
+    <div id="root" className="d-flex flex-column min-vh-100">
+      <Header onLogout={onLogout} user={user} />
+      <div className="container pt-1">
+        <Tabs
+          items={items}
+          activeKey={tab}
+          onChange={(key) => setTab(key)}
+          type="card"
+          tabBarStyle={{ marginBottom: 12 }}
+        />
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 function TeacherShell({user, onLogout}) {
