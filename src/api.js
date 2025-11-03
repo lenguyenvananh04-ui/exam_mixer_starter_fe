@@ -170,3 +170,47 @@ export async function deleteMixedExam(id) {
     method: "DELETE",
   });
 }
+
+// ================== QUẢN LÝ NGƯỜI DÙNG ==================
+export async function listUsers() {
+  return jsonFetch(`${API}/users`, { method: "GET" });
+}
+
+export async function registerUser(payload) {
+  return jsonFetch(`${API}/users/register`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function approveUser(id) {
+  return jsonFetch(`${API}/users/${id}/approve`, { method: "PUT" });
+}
+
+export async function rejectUser(id) {
+  return jsonFetch(`${API}/users/${id}/reject`, { method: "PUT" });
+}
+
+export async function updateUser(id, payload) {
+  return jsonFetch(`${API}/users/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteUser(id) {
+  return jsonFetch(`${API}/users/${id}`, { method: "DELETE" });
+}
+
+export async function createUserByAdmin(payload) {
+  return jsonFetch(`${API}/users`, {
+    method: "POST",
+    body: JSON.stringify({
+      code: payload.code,
+      name: payload.name,
+      password: payload.password,
+      email: payload.email,
+      role: payload.role || "student",
+    }),
+  });
+}
