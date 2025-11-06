@@ -98,7 +98,7 @@ function TeacherShell({user, onLogout}) {
         },
        {
            key: "uploads",
-           label: "📂 Danh sách bài thi",
+           label: "📂 Danh mục bài thi",
            children: <UploadList/>,
        },
         {

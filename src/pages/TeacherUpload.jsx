@@ -113,7 +113,7 @@ export default function TeacherUpload() {
     const totalUploaded = getTotalQ(bankInfo);
 
     return (
-        <div >
+         <div style={{ padding: 16 }}>
             <Title level={3}>📤 Tải và Trộn đề</Title>
 
             {/* Môn học */}
