@@ -202,15 +202,14 @@ export async function deleteUser(id) {
   return jsonFetch(`${API}/users/${id}`, { method: "DELETE" });
 }
 
-export async function createUserByAdmin(payload) {
-  return jsonFetch(`${API}/users`, {
+export const createUserByAdmin = (data) =>
+  fetch(`${API}/users`, {
     method: "POST",
-    body: JSON.stringify({
-      code: payload.code,
-      name: payload.name,
-      password: payload.password,
-      email: payload.email,
-      role: payload.role || "student",
-    }),
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
   });
-}

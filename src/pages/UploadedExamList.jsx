@@ -1,28 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-    Table,
-    Button,
-    Upload,
-    message,
-    Popconfirm,
-    Modal,
-    Form,
-    Input,
-    Space,
-} from "antd";
-import {
-    UploadOutlined,
-    DeleteOutlined,
-    EditOutlined,
-    ReloadOutlined,
-} from "@ant-design/icons";
-import {
-    listUploadedExams,
-    createUploadedExam,
-    updateUploadedExam,
-    deleteUploadedExam,
-} from "../api.js";
-
+import {Table, Button, Upload, message, Popconfirm, Modal, Form, Input, Space,Typography} from "antd";
+import {UploadOutlined, DeleteOutlined, EditOutlined, ReloadOutlined} from "@ant-design/icons";
+import {listUploadedExams, createUploadedExam, updateUploadedExam, deleteUploadedExam} from "../api.js";
+const { Title } = Typography; // Bây giờ mới dùng được!
 const UploadList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -132,8 +112,8 @@ const UploadList = () => {
     ];
 
     return (
-        <div style={{ padding: 24 }}>
-            <h2>📘 Danh sách bài thi đã tải lên</h2>
+        <div style={{ padding: 16 }}>
+            <Title level={3}>📂 Danh mục bài thi đã tải lên</Title>
 
             <div style={{ marginBottom: 16 }}>
                 <Space>
@@ -142,7 +122,6 @@ const UploadList = () => {
                         customRequest={handleUpload}
                         accept=".csv,.xlsx"
                     >
-                        <Button icon={<UploadOutlined />}>Tải lên bài thi</Button>
                     </Upload>
 
                     <Button
